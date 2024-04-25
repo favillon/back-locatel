@@ -8,7 +8,7 @@ use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-use App\Models\User;
+use App\Models\{AccountType, User};
 
 class LoginTest extends TestCase
 {
@@ -18,7 +18,7 @@ class LoginTest extends TestCase
     public function test_user_can_login(): void
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'test@example.com',            
             'password' => Hash::make('password'),
         ]);
        
@@ -35,15 +35,18 @@ class LoginTest extends TestCase
     }
 
     public function test_user_can_register(): void
-    {         
+    {        
+        AccountType::factory()->create(['name' => 'Ahorro']);
+
         $userData = [
             'name' => 'Test User',
-            'email' => 'test@exampaale.com',
+            'email' => 'test@exampaalea.com',
+            'identification' => 123456789,
             'password' => 'password',
         ];
 
         $response = $this->postJson('/api/register', $userData);
-        //dd($response);
+
         $response->assertJsonStructure([
             'token',
         ])->assertStatus(Response::HTTP_CREATED);
@@ -53,7 +56,7 @@ class LoginTest extends TestCase
     {         
         Sanctum::actingAs(User::factory()->create());
 
-        $response = $this->get('/api/logout');
+        $response = $this->delete('/api/logout');
         $response->assertStatus(Response::HTTP_NO_CONTENT);
     
     }

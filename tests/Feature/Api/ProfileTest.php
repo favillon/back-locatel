@@ -18,7 +18,7 @@ class ProfileTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
 
         $response = $this->get('/api/profile');
-        $response   ->assertJsonCount(6, 'data')
+        $response   ->assertJsonCount(7, 'data')
                     ->assertJsonStructure([
                         'data' => [
                             'id',
