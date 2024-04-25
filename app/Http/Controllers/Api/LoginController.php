@@ -7,17 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Hash, Validator};
 use Symfony\Component\HttpFoundation\Response;
 
-use App\Models\User;
+use Ramsey\Uuid\Uuid;
+
+use App\Enums\TransactionTypeEnum;
+use App\Models\{User, Account};
 
 class LoginController extends Controller
 {
+    private $createAccount = true;
+    private $accountType   = TransactionTypeEnum::DEPOSIT;
+
     public function register(Request $request)
     {
         try {
             $validateUser = Validator::make($request->all(),[
-                'name'     => 'required',
-                'email'    => 'required|email|unique:users,email',
-                'password' => 'required'
+                'name'            => 'required',
+                'email'           => 'required|email|unique:users,email',
+                'identification'  => 'required|unique:users,identification',
+                'password'        => 'required'
             ]);
 
             if ($validateUser->fails()) {
@@ -29,10 +36,16 @@ class LoginController extends Controller
             }
 
             $user  = User::create([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => $request->password
+                'name'           => $request->name,
+                'email'          => $request->email,
+                'identification' => $request->identification,
+                'password'       => $request->password
             ]);
+
+            if ($this->createAccount) {
+                $this->_createAccount($user);
+            } 
+
             return response()->json([
                 'status'  => true,
                 'message' => 'User created successfully',
@@ -89,4 +102,15 @@ class LoginController extends Controller
         $userData->tokens()->where('id', $userData->currentAccessToken()->id)->delete();
         return response()->json(null, Response::HTTP_NO_CONTENT); // 204
     }
-}
+
+    private function _createAccount(User $user)
+    {
+        $uuid = Uuid::uuid4();
+        $account = Account::create([
+            'account_number'  => $uuid->toString(),
+            'user_id'         => $user->id,
+            'account_type_id' => $this->accountType,
+            'balance'         => 0
+        ]);
+    }
+ }

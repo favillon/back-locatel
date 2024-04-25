@@ -3,13 +3,17 @@
         <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
     </a>
 </p>
-
+<p align="center">
+    <a href="https://www.locatelcolombia.com/" target="_blank">
+        <img src="https://locatelcolombia.vtexassets.com/assets/vtex.file-manager-graphql/images/d24047f6-548e-44f2-9ef6-d0e6e48229f9___1bc6e809f887b47ea360ee4ade95fbcc.png"  alt="Locatel Logo">
+    </a>
+</p>
 
 ## Creacion de los Modelos Factories Migraciones y Seed
 
 Comando creacion Modelos Migraciones y Factories
 
-```
+```shell
 ./vendor/bin/sail php artisan make:model AccountType -mf 
 ./vendor/bin/sail php artisan make:model TransactionType -mf 
 ./vendor/bin/sail php artisan make:model Account -mf 
@@ -22,8 +26,17 @@ Corriendo las migracion y los factories
 ./vendor/bin/sail php artisan migrate --seed
 ```
 
+Instalando dependencia del UUID
 
+```shell
+./vendor/bin/sail composer require ramsey/uuid
+```
 
+Creando Controlador para Transacciones
+
+```
+./vendor/bin/sail php artisan make:controller Api/TransactionController
+```
 
 
 
