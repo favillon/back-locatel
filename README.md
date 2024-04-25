@@ -34,11 +34,33 @@ Instalando dependencia del UUID
 
 Creando Controlador para Transacciones
 
-```
+```shell
 ./vendor/bin/sail php artisan make:controller Api/TransactionController
 ```
 
+Creado evento para actualizar el saldo
+```shell
+php artisan make:event BalanceAccountEvent
+```
 
+Creando Listerners
+```shell
+php artisan make:listener UpdateAccountListerner --event=BalanceAccountEvent
+```
+
+Listando  logs de la aplicacion 
+```shell
+tail -f storage/logs/laravel.log
+```
+
+Existe una coleccion en postman para su vinculacion y testeo 
+> ./readme/BackLocatel.postman_collection.json
+
+---
+---
+---
+
+> **Me base el proyecto `git clone git@github.com:favillon/api_laravel.git` indicado aca abajo**
 
 
 # Proyecto base para creacion de API con Laravel

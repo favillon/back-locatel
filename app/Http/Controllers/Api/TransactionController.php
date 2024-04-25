@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
+use App\Events\BalanceAccountEvent;
 
 class TransactionController extends Controller
 {
@@ -34,7 +35,9 @@ class TransactionController extends Controller
             $validateRequest = Validator::make($request->all(), [
                 'value'  => 'required'
             ]);
-           
+
+            $request->value =  ($transactionType == 1)  ? $request->value  :  ($request->value * -1) ;
+
             if ($validateRequest->fails()) {
                 return [
                     'status'  => false,
@@ -43,11 +46,15 @@ class TransactionController extends Controller
                     'code'    => Response::HTTP_UNAUTHORIZED
                 ];
             }
-            Transaction::create([
+            $transaction = Transaction::create([
                 'transaction_type_id' => $transactionType,
                 'account_id'          => $account->id,
                 'value'               => $request->value,
             ]);
+
+            if ($transaction) {
+                BalanceAccountEvent::dispatch(['user' => $authUser, 'account' => $account]);
+            }
 
             return [
                 'status'  => true,
