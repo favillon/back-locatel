@@ -18,11 +18,14 @@ class ProfileTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
 
         $response = $this->get('/api/profile');
-        $response   ->assertJsonCount(7, 'data')
+        //dd($response);
+        $response   ->assertJsonCount(4, 'data')
                     ->assertJsonStructure([
                         'data' => [
-                            'id',
-                            'name'
+                            'name',
+                            'email',
+                            'identification',
+                            'account' 
                         ]
                     ])
                     ->assertStatus(Response::HTTP_OK);

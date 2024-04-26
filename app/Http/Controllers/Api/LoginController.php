@@ -49,6 +49,11 @@ class LoginController extends Controller
             return response()->json([
                 'status'  => true,
                 'message' => 'User created successfully',
+                'attributes' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'identification' => $request->identification,
+                ],
                 'token'   => $user->createToken('web')->plainTextToken
             ], Response::HTTP_CREATED); //201
 
@@ -80,9 +85,9 @@ class LoginController extends Controller
             return response()->json([
                 'status'  => true,
                 'attributes' => [
-                    'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'identification' => $user->identification,
                 ],
                 'token'   => $user->createToken('web')->plainTextToken
             ], Response::HTTP_OK); //200

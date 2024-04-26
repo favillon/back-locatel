@@ -40,12 +40,12 @@ Creando Controlador para Transacciones
 
 Creado evento para actualizar el saldo
 ```shell
-php artisan make:event BalanceAccountEvent
+./vendor/bin/sail  php artisan make:event BalanceAccountEvent
 ```
 
 Creando Listerners
 ```shell
-php artisan make:listener UpdateAccountListerner --event=BalanceAccountEvent
+./vendor/bin/sail php artisan make:listener UpdateAccountListerner --event=BalanceAccountEvent
 ```
 
 Listando  logs de la aplicacion 
@@ -55,6 +55,12 @@ tail -f storage/logs/laravel.log
 
 Existe una coleccion en postman para su vinculacion y testeo 
 > ./readme/BackLocatel.postman_collection.json
+
+
+Creacion de recurso
+```shell
+./vendor/bin/sail  php artisan mak e:resource ProfileResource
+```
 
 ---
 ---
